@@ -26,7 +26,7 @@ export default {
 
 ```html
 <!-- index.html -->
-<script type="application/json">
+<script type="application/json" data-format="twig">
   {
     "template": "path/to/template.twig",
     "title": "Hello world"

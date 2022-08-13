@@ -35,7 +35,7 @@ function processData(paths, data = {}) {
     return context
 }
 
-const renderTemplate = (filename, content, options) => {
+const renderTemplate = async(filename, content, options) => {
     const output = {}
     const context = processData(options.data, options.globals)
 
@@ -79,17 +79,15 @@ const renderTemplate = (filename, content, options) => {
         lodash.merge(context, JSON.parse(fs.readFileSync(filename + '.json').toString()))
     }
 
-    try {
-        output.content = Twig.twig({
-            async: true,
-            data: content,
-            path: filename,
-            namespaces: options.namespaces,
-            rethrow: true
-        }).render(context)
-    } catch (error) {
+    output.content = await Twig.twig({
+        allowAsync: true,
+        data: content,
+        path: filename,
+        namespaces: options.namespaces,
+        rethrow: true
+    }).renderAsync(context).catch((error) => {
         output.error = error
-    }
+    })
 
     return output
 }
@@ -117,7 +115,7 @@ const plugin = (options = {}) => {
                     return content
                 }
 
-                const render = renderTemplate(filename, content, options)
+                const render = await renderTemplate(filename, content, options)
 
                 if (render.error) {
                     if (!server) {

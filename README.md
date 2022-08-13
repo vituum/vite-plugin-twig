@@ -1,7 +1,7 @@
 <a href="https://npmjs.com/package/@vituum/vite-plugin-twig"><img src="https://img.shields.io/npm/v/@vituum/vite-plugin-twig.svg" alt="npm package"></a>
 <a href="https://nodejs.org/en/about/releases/"><img src="https://img.shields.io/node/v/@vituum/vite-plugin-twig.svg" alt="node compatility"></a>
 
-# ⚡️🌿 ViteTwig
+# ⚡️🌱 ViteTwig
 
 ```js
 export default {

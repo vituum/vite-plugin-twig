@@ -33,10 +33,12 @@ export default {
   }
 </script>
 ```
+or
 ```html
 <!-- index.twig.html -->
-  {{ title }}
+{{ title }}
 ```
+or
 ```html
 <!-- index.json.html or index.twig.json.html  -->
 {

@@ -4,25 +4,37 @@
 # ⚡️🌱 ViteTwig
 
 ```js
+import twig from '@vituum/vite-plugin-twig'
+
 export default {
   plugins: [
     twig({
+      reload: true,
+      root: null,
       filters: {},
       functions: {},
       extensions: [],
       namespaces: {}, 
-      data: '*.json',
       globals: {
           template: 'path/to/template.twig'
       },
+      data: '*.json',
       filetypes: {
           html: /.(json.html|twig.json.html|twig.html)$/,
           json: /.(json.twig.html)$/
+      },
+      twig: {
+          compileOptions: {},
+          renderOptions: {}
       }
     })
   ]
 }
 ```
+
+Read the [docs](https://vituum.dev/config/integrations-options.html#vituum-twig) to learn more about plugin options
+
+## Basic usage
 
 ```html
 <!-- index.html -->
@@ -50,3 +62,4 @@ or
 ### Requirements
 
 - [Node.js LTS (16.x)](https://nodejs.org/en/download/)
+- [Vite](https://vitejs.dev/) or [Vituum](https://vituum.dev/)

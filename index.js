@@ -52,7 +52,6 @@ const renderTemplate = async(filename, content, options) => {
         lodash.merge(context, isHtml ? content : JSON.parse(fs.readFileSync(filename).toString()))
 
         content = '{% include template %}'
-        filename = options.root + '/'
 
         context.template = relative(process.cwd(), context.template).startsWith(relative(process.cwd(), options.root)) ? resolve(process.cwd(), context.template) : resolve(options.root, context.template)
 
@@ -90,7 +89,7 @@ const renderTemplate = async(filename, content, options) => {
     output.content = await Twig.twig(Object.assign({
         allowAsync: true,
         data: content,
-        path: filename,
+        path: options.root + '/',
         namespaces: options.namespaces,
         rethrow: true
     }, options.twig.compileOptions)).renderAsync(context, options.twig.renderOptions).catch((error) => {

@@ -32,7 +32,7 @@ export default {
 }
 ```
 
-Read the [docs](https://vituum.dev/config/integrations-options.html#vituum-twig) to learn more about plugin options
+Read the [docs](https://vituum.dev/config/integrations-options.html#vituum-twig) to learn more about the plugin options.
 
 ## Basic usage
 

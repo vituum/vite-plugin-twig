@@ -46,12 +46,16 @@ const renderTemplate = async(filename, content, options) => {
     const context = options.data ? processData(options.data, options.globals) : options.globals
 
     const isJson = filename.endsWith('.json.html') || filename.endsWith('.json')
-    const isHtml = filename.endsWith('.html') && !filename.endsWith('.json.html')
+    const isHtml = filename.endsWith('.html') && !options.filetypes.html.test(filename) && !options.filetypes.json.test(filename) && !isJson
 
     if (isJson || isHtml) {
         lodash.merge(context, isHtml ? content : JSON.parse(fs.readFileSync(filename).toString()))
 
         content = '{% include template %}'
+
+        if (typeof context.template === 'undefined') {
+            console.error(chalk.red(name + ' template must be defined - ' + filename))
+        }
 
         context.template = relative(process.cwd(), context.template).startsWith(relative(process.cwd(), options.root)) ? resolve(process.cwd(), context.template) : resolve(options.root, context.template)
 

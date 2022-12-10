@@ -1,16 +1,16 @@
 {
   "name": "@vituum/vite-plugin-twig",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "main": "index.js",
   "dependencies": {
     "twig": "^1.15.4",
     "lodash": "^4.17.21",
-    "chalk": "^5.0.1",
-    "fast-glob": "^3.2.11"
+    "chalk": "^5.2.0",
+    "fast-glob": "^3.2.12"
   },
   "devDependencies": {
-    "eslint": "^8.22.0",
+    "eslint": "^8.29.0",
     "eslint-config-standard": "^17.0.0"
   },
   "files": [

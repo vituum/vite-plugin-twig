@@ -143,13 +143,13 @@ const plugin = (options = {}) => {
                         return
                     }
 
-                    server.ws.send({
+                    setTimeout(() => server.ws.send({
                         type: 'error',
                         err: {
                             message: render.error.message,
                             plugin: name
                         }
-                    })
+                    }), 50)
                 }
 
                 return render.content

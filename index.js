@@ -32,7 +32,9 @@ function processData(paths, data = {}) {
 
     lodash.merge(context, data)
 
-    FastGlob.sync(paths).forEach(entry => {
+    const normalizePaths = Array.isArray(paths) ? paths.map(path => path.replace(/\\/g, '/')) : paths.replace(/\\/g, '/')
+
+    FastGlob.sync(normalizePaths).forEach(entry => {
         const path = resolve(process.cwd(), entry)
 
         context = lodash.merge(context, JSON.parse(fs.readFileSync(path).toString()))

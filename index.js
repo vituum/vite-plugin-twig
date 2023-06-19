@@ -1,6 +1,5 @@
-import { resolve, relative } from 'path'
+import { relative } from 'path'
 import fs from 'fs'
-import process from 'node:process'
 import lodash from 'lodash'
 import Twig from 'twig'
 import { getPackageInfo, merge, pluginBundle, pluginError, pluginReload, processData } from 'vituum/utils/common.js'
@@ -9,7 +8,7 @@ import { renameBuildEnd, renameBuildStart } from 'vituum/utils/build.js'
 const { name } = getPackageInfo(import.meta.url)
 
 /**
- * @type {import('@vituum/vite-plugin-twig/types/index.d.ts').PluginUserConfig}
+ * @type {import('@vituum/vite-plugin-twig/types').PluginUserConfig}
  */
 const defaultOptions = {
     reload: true,
@@ -55,7 +54,6 @@ const renderTemplate = async ({ filename, server }, content, options) => {
             })
         }
 
-        context.template = relative(process.cwd(), context.template).startsWith(relative(process.cwd(), options.root)) ? resolve(process.cwd(), context.template) : resolve(options.root, context.template)
         context.template = relative(options.root, context.template)
     } else if (fs.existsSync(filename + '.json')) {
         lodash.merge(context, JSON.parse(fs.readFileSync(`${initialFilename}.json`).toString()))
@@ -110,7 +108,7 @@ const renderTemplate = async ({ filename, server }, content, options) => {
 }
 
 /**
- * @param {import('@vituum/vite-plugin-twig/types/index.d.ts').PluginUserConfig} options
+ * @param {import('@vituum/vite-plugin-twig/types').PluginUserConfig} options
  * @returns [import('vite').Plugin]
  */
 const plugin = (options = {}) => {
@@ -146,12 +144,9 @@ const plugin = (options = {}) => {
             await renameBuildEnd(resolvedConfig.build.rollupOptions.input, options.formats)
         },
         transformIndexHtml: {
-            enforce: 'pre',
-            async transform (content, { path, filename, server }) {
-                path = path.replace('?raw', '')
-                filename = filename.replace('?raw', '')
-
-                if (!options.formats.find(format => path.endsWith(`${format}.html`))) {
+            order: 'pre',
+            async transform (content, { filename, server }) {
+                if (!options.formats.find(format => filename.replace('.html', '').endsWith(format))) {
                     return content
                 }
 

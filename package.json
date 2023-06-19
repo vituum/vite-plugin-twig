@@ -1,9 +1,8 @@
 {
   "name": "@vituum/vite-plugin-twig",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.4",
   "type": "module",
   "main": "index.js",
-  "types": "types/index.d.ts",
   "scripts": {
     "tsc": "tsc",
     "eslint": "eslint '**/*.js' --fix"

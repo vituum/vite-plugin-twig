@@ -28,10 +28,15 @@ const defaultOptions = {
     }
 }
 
-const renderTemplate = async ({ filename, server }, content, options) => {
+const renderTemplate = async ({ filename, server, root }, content, options) => {
     const initialFilename = filename.replace('.html', '')
     const output = {}
-    const context = options.data ? processData(options.data, options.globals) : options.globals
+    const context = options.data
+        ? processData({
+            paths: options.data,
+            root
+        }, options.globals)
+        : options.globals
 
     if (initialFilename.endsWith('.json')) {
         lodash.merge(context, JSON.parse(fs.readFileSync(server ? initialFilename : filename).toString()))
@@ -150,7 +155,7 @@ const plugin = (options = {}) => {
                     return content
                 }
 
-                const render = await renderTemplate({ filename, server }, content, options)
+                const render = await renderTemplate({ filename, server, root: resolvedConfig.root }, content, options)
                 const renderError = pluginError(render.error, server, name)
 
                 if (renderError && server) {

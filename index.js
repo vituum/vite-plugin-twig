@@ -1,5 +1,5 @@
-import { relative } from 'path'
-import fs from 'fs'
+import { relative, resolve } from 'node:path'
+import fs from 'node:fs'
 import lodash from 'lodash'
 import Twig from 'twig'
 import { getPackageInfo, merge, pluginBundle, pluginError, pluginReload, processData } from 'vituum/utils/common.js'
@@ -59,6 +59,7 @@ const renderTemplate = async ({ filename, server, root }, content, options) => {
             })
         }
 
+        context.template = relative(process.cwd(), context.template).startsWith(relative(process.cwd(), options.root)) ? resolve(process.cwd(), context.template) : resolve(options.root, context.template)
         context.template = relative(options.root, context.template)
     } else if (fs.existsSync(filename + '.json')) {
         lodash.merge(context, JSON.parse(fs.readFileSync(`${initialFilename}.json`).toString()))
@@ -151,7 +152,10 @@ const plugin = (options = {}) => {
         transformIndexHtml: {
             order: 'pre',
             async transform (content, { filename, server }) {
-                if (!options.formats.find(format => filename.replace('.html', '').endsWith(format))) {
+                if (
+                    !options.formats.find(format => filename.replace('.html', '').endsWith(format)) ||
+                    (filename.replace('.html', '').endsWith('.json') && !content.startsWith('{'))
+                ) {
                     return content
                 }
 

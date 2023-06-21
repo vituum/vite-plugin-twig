@@ -1,6 +1,6 @@
 {
   "name": "@vituum/vite-plugin-twig",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "eslint": "eslint '**/*.js' --fix"
   },
   "dependencies": {
-    "vituum": "^1.0.0-alpha.17",
+    "vituum": "^1.0.0-alpha.19",
     "twig": "^1.16.0",
     "lodash": "^4.17.21"
   },

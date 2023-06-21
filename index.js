@@ -159,6 +159,13 @@ const plugin = (options = {}) => {
                     return content
                 }
 
+                if (
+                    (filename.replace('.html', '').endsWith('.json') && content.startsWith('{')) &&
+                    (JSON.parse(content)?.format && !options.formats.includes(JSON.parse(content)?.format))
+                ) {
+                    return content
+                }
+
                 const render = await renderTemplate({ filename, server, root: resolvedConfig.root }, content, options)
                 const renderError = pluginError(render.error, server, name)
 

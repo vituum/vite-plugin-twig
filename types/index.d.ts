@@ -13,5 +13,6 @@ export interface PluginUserConfig {
     globals?: Object
     data?: string | string[]
     formats?: string[]
-    twig?: TwigOptions
+    ignoredPaths?: string[]
+    options?: TwigOptions
 }

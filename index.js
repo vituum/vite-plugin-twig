@@ -4,6 +4,7 @@ import lodash from 'lodash'
 import Twig from 'twig'
 import { getPackageInfo, merge, pluginBundle, pluginError, pluginReload, processData } from 'vituum/utils/common.js'
 import { renameBuildEnd, renameBuildStart } from 'vituum/utils/build.js'
+import { minimatch } from "minimatch";
 
 const { name } = getPackageInfo(import.meta.url)
 
@@ -22,7 +23,8 @@ const defaultOptions = {
     },
     data: ['src/data/**/*.json'],
     formats: ['twig', 'json.twig', 'json'],
-    twig: {
+    ignoredPaths: [],
+    options: {
         compileOptions: {},
         renderOptions: {}
     }
@@ -61,7 +63,7 @@ const renderTemplate = async ({ filename, server, root }, content, options) => {
 
         context.template = relative(process.cwd(), context.template).startsWith(relative(process.cwd(), options.root)) ? resolve(process.cwd(), context.template) : resolve(options.root, context.template)
         context.template = relative(options.root, context.template)
-    } else if (fs.existsSync(filename + '.json')) {
+    } else if (fs.existsSync(initialFilename + '.json')) {
         lodash.merge(context, JSON.parse(fs.readFileSync(`${initialFilename}.json`).toString()))
     }
 
@@ -109,7 +111,7 @@ const renderTemplate = async ({ filename, server, root }, content, options) => {
             path: options.root + '/',
             namespaces: options.namespaces,
             rethrow: true
-        }, options.twig.compileOptions)).renderAsync(context, options.twig.renderOptions).catch(onError).then(onSuccess)
+        }, options.options.compileOptions)).renderAsync(context, options.options.renderOptions).catch(onError).then(onSuccess)
     })
 }
 
@@ -151,7 +153,7 @@ const plugin = (options = {}) => {
         },
         transformIndexHtml: {
             order: 'pre',
-            async transform (content, { filename, server }) {
+            async transform (content, { path, filename, server }) {
                 if (
                     !options.formats.find(format => filename.replace('.html', '').endsWith(format)) ||
                     (filename.replace('.html', '').endsWith('.json') && !content.startsWith('{'))
@@ -163,6 +165,10 @@ const plugin = (options = {}) => {
                     (filename.replace('.html', '').endsWith('.json') && content.startsWith('{')) &&
                     (JSON.parse(content)?.format && !options.formats.includes(JSON.parse(content)?.format))
                 ) {
+                    return content
+                }
+
+                if (options.ignoredPaths.find(ignoredPath => minimatch(path.replace('.html', ''), ignoredPath) === true)) {
                     return content
                 }
 

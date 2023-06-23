@@ -19,7 +19,7 @@ export default {
 ```
 
 * Read the [docs](https://vituum.dev/plugins/twig.html) to learn more about the plugin options.
-* Use with [Vituum](https://vituum.dev) to get full functionality.
+* Use with [Vituum](https://vituum.dev) to get multi-page support.
 
 ## Basic usage
 

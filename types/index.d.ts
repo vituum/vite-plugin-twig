@@ -16,3 +16,5 @@ export interface PluginUserConfig {
     ignoredPaths?: string[]
     options?: TwigOptions
 }
+
+export default function plugin(options?: PluginUserConfig) : import('vite').Plugin

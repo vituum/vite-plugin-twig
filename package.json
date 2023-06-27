@@ -1,19 +1,20 @@
 {
   "name": "@vituum/vite-plugin-twig",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0",
   "type": "module",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "tsc": "tsc",
     "eslint": "eslint '**/*.js' --fix"
   },
   "dependencies": {
-    "vituum": "^1.0.0-beta.3",
+    "vituum": "^1.0.0",
     "twig": "^1.16.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@types/node": "^20.3.1",
+    "@types/node": "^20.3.2",
     "@types/twig": "^1.12.9",
     "typescript": "^5.1.3",
     "vite": "^4.3.9",
@@ -29,7 +30,7 @@
     "./types": "./types/*"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=16.0.0",
     "npm": ">=9.0.0"
   },
   "repository": {

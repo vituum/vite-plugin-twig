@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "strict": false,
+    "noEmit": true,
+    "target": "es2020",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@vituum/vite-plugin-twig/*": ["./*"],
+      "vituum/*": ["./node_modules/vituum/src/*"]
+    }
+  },
+  "include": [
+    "index.js",
+    "node_modules/vituum",
+    "./types/**/*.d.ts"
+  ],
+  "files": [
+    "index.js"
+  ]
+}

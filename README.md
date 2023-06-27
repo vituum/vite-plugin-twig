@@ -7,52 +7,29 @@
 import twig from '@vituum/vite-plugin-twig'
 
 export default {
-  plugins: [
-    twig({
-      reload: true,
-      root: null,
-      filters: {},
-      functions: {},
-      extensions: [],
-      namespaces: {}, 
-      globals: {
-          template: 'path/to/template.twig'
-      },
-      data: '*.json',
-      filetypes: {
-          html: /.(json.html|twig.json.html|twig.html)$/,
-          json: /.(json.twig.html)$/
-      },
-      twig: {
-          compileOptions: {},
-          renderOptions: {}
-      }
-    })
-  ]
+    plugins: [
+        twig()
+    ],
+    build: {
+        rollupOptions: {
+            input: ['index.twig.html']
+        }
+    }
 }
 ```
 
-Read the [docs](https://vituum.dev/config/integrations-options.html#vituum-twig) to learn more about the plugin options.
+* Read the [docs](https://vituum.dev/plugins/twig.html) to learn more about the plugin options.
+* Use with [Vituum](https://vituum.dev) to get multi-page support.
 
 ## Basic usage
 
 ```html
-<!-- index.html -->
-<script type="application/json" data-format="twig">
-  {
-    "template": "path/to/template.twig",
-    "title": "Hello world"
-  }
-</script>
-```
-or
-```html
-<!-- index.twig.html -->
+<!-- index.twig with index.twig.json -->
 {{ title }}
 ```
 or
 ```html
-<!-- index.json.html or index.twig.json.html  -->
+<!-- index.json -->
 {
   "template": "path/to/template.twig",
   "title": "Hello world"
@@ -62,4 +39,4 @@ or
 ### Requirements
 
 - [Node.js LTS (16.x)](https://nodejs.org/en/download/)
-- [Vite](https://vitejs.dev/) or [Vituum](https://vituum.dev/)
+- [Vite](https://vitejs.dev/)

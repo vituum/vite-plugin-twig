@@ -159,7 +159,7 @@ const plugin = (options = {}) => {
         },
         transformIndexHtml: {
             order: 'pre',
-            async transform (content, { path, filename, server }) {
+            async handler (content, { path, filename, server }) {
                 return pluginTransform(content, { path, filename, server }, { name, options, resolvedConfig, renderTemplate })
             }
         },

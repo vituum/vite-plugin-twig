@@ -1,5 +1,6 @@
 import { relative, resolve } from 'node:path'
 import fs from 'node:fs'
+import fsp from 'node:fs/promises'
 import lodash from 'lodash'
 import Twig from 'twig'
 import {
@@ -10,7 +11,6 @@ import {
     pluginReload, pluginTransform,
     processData
 } from 'vituum/utils/common.js'
-import { renameBuildEnd, renameBuildStart } from 'vituum/utils/build.js'
 
 const { name } = getPackageInfo(import.meta.url)
 
@@ -130,6 +130,24 @@ const plugin = (options = {}) => {
     let userEnv
 
     options = merge(defaultOptions, options)
+    const idMap = new Map()
+
+    /**
+     * @param {(id: string) => Promise<import('rollup').ResolveIdResult>} resolver
+     * @param {string} id
+     * @param {string} format
+     * @returns {Promise<import('rollup').ResolveIdResult>}
+     */
+    const resolveId = async (resolver, id, format) => {
+        if (id.endsWith(`${format}.html`)) {
+            const result = await resolver(id.substring(0, id.length - 5))
+            if (typeof result === 'object' && result !== null) {
+                idMap.set(id, result.id)
+                return Object.assign({}, result, {id})
+            }
+        }
+        return null
+    }
 
     return [{
         name,
@@ -143,19 +161,31 @@ const plugin = (options = {}) => {
                 options.root = config.root
             }
         },
-        buildStart: async () => {
-            if (userEnv.command !== 'build' || !resolvedConfig.build.rollupOptions.input) {
-                return
+        async resolveId (id, importer, resolveOptions) {
+            for (const format of options.formats) {
+                const result = await resolveId((id) => this.resolve(id, importer, Object.assign({}, resolveOptions, { skipSelf: true })), id, format)
+                if (result) {
+                    return result
+                }
             }
-
-            await renameBuildStart(resolvedConfig.build.rollupOptions.input, options.formats)
+            return null
         },
-        buildEnd: async () => {
-            if (userEnv.command !== 'build' || !resolvedConfig.build.rollupOptions.input) {
-                return
+        async load (id) {
+            if (!idMap.has(id)) {
+                return null
             }
-
-            await renameBuildEnd(resolvedConfig.build.rollupOptions.input, options.formats)
+            const originalId = idMap.get(id)
+            try {
+                const cleanedId = originalId.replace(/[?#].*$/s, '');
+                const content = await fsp.readFile(cleanedId, 'utf-8');
+                this.addWatchFile(cleanedId);
+                return content;
+            }
+            catch (e) {
+                const content = await fsp.readFile(originalId, 'utf-8');
+                this.addWatchFile(originalId);
+                return content;
+            }
         },
         transformIndexHtml: {
             order: 'pre',

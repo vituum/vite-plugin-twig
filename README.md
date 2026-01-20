@@ -38,5 +38,5 @@ or
 
 ### Requirements
 
-- [Node.js LTS (16.x)](https://nodejs.org/en/download/)
-- [Vite](https://vitejs.dev/)
+- [Node.js LTS (24.x)](https://nodejs.org/en/download/)
+- [Vite (8.x)](https://vitejs.dev/)

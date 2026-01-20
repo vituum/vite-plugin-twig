@@ -4,14 +4,14 @@
     "checkJs": true,
     "strict": false,
     "noEmit": true,
-    "target": "es2020",
+    "target": "es2022",
     "module": "es2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
       "@vituum/vite-plugin-twig/*": ["./*"],
-      "vituum/*": ["./node_modules/vituum/src/*"]
+      "vituum/*": ["./node_modules/vituum/*"]
     }
   },
   "include": [

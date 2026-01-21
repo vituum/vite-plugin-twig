@@ -125,7 +125,7 @@ const renderTemplate = async ({ filename, resolvedConfig }, content, options) =>
 
 /**
  * @param {import('@vituum/vite-plugin-twig/types').PluginUserConfig} options
- * @returns [import('vite').Plugin]
+ * @returns {import('vite').Plugin[]}
  */
 const plugin = (options = {}) => {
   let resolvedConfig
@@ -161,6 +161,7 @@ const plugin = (options = {}) => {
     },
     transformIndexHtml: {
       order: 'pre',
+      /** @returns {Promise<string | Object>} */
       async handler(content, { path, filename, server }) {
         return pluginTransform(content, { path, filename, server }, { name, options, resolvedConfig, renderTemplate })
       },

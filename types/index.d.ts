@@ -17,4 +17,4 @@ export interface PluginUserConfig {
     options?: TwigOptions
 }
 
-export default function plugin(options?: PluginUserConfig) : import('vite').Plugin
+export default function plugin(options?: PluginUserConfig) : import('vite').Plugin[]
